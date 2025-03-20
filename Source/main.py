@@ -4,30 +4,16 @@ import platform
 
 class ClassLibraries:
     def Pip(self):
-        try:
-            subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
-        except subprocess.CalledProcessError:
-            subprocess.run([sys.executable, '-m', 'ensurepip', '--default-pip'], check=True)
+        try: subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
+        except subprocess.CalledProcessError: subprocess.run([sys.executable, '-m', 'ensurepip', '--default-pip'], check=True)
 
-    def List(self):
-        StandardLibraries = [
-            'csv', 'datetime', 'locale', 'math', 'os', 'smtplib', 'ssl', 'sys', 
-            'threading', 'time', 'tkinter', 'webbrowser'
-        ]
-        ExternalLibraries = [
-            'clipboard', 'email_validator', 'folium', 'geocoder', 'geopandas', 'getgfs', 'keyboard', 
-            'matplotlib', 'mpl_toolkits', 'numpy', 'opencv-python', 'pafy', 'pandas', 'pyautogui', 
-            'pygame', 'pyproj', 'pyserial', 'requests', 'scipy', 'serial', 'Shapely', 'simplekml', 
-            'socket', 'streamlink', 'tzlocal', 'xml.etree.ElementTree', 'yt_dlp'
-        ]
-
+    def Setup(self):
+        ExternalLibraries = ['clipboard', 'email_validator', 'folium', 'geocoder', 'geopandas', 'getgfs', 'keyboard', 'matplotlib', 'mpl_toolkits', 'numpy', 'opencv-python', 'pafy', 'pandas', 'pyautogui', 'pygame', 'pyproj', 'pyserial', 'requests', 'scipy', 'serial', 'Shapely', 'simplekml', 'streamlink', 'tzlocal', 'yt_dlp']
         MissingLibraries = []
 
-        for library in StandardLibraries + ExternalLibraries:
-            try:
-                __import__(library)
-            except ImportError:
-                MissingLibraries.append(library)
+        for library in ExternalLibraries:
+            try:  __import__(library)
+            except ImportError: MissingLibraries.append(library)
 
         self.Check(MissingLibraries)
         self.Upgrade(ExternalLibraries)
@@ -66,12 +52,14 @@ try:
     import random
     import re
     import smtplib
+    import socket
     import ssl
     import threading
     import time
     import tkinter as tk
     from tkinter import filedialog
     import webbrowser
+    import xml.etree.ElementTree as ET
 
     # Third-Party Libraries
     import clipboard
@@ -96,30 +84,15 @@ try:
     import requests
     from scipy.interpolate import interp1d
     import serial.tools.list_ports
-    from shapely.geometry import shape, Polygon, LineString, MultiLineString
-    from shapely.geometry import Polygon, shape, Point
-    from shapely.geometry import Point, box
+    from shapely.geometry import box, shape, LineString, MultiLineString, Point, Polygon
     from shapely.strtree import STRtree
     import simplekml
-    import socket
     import streamlink
     from tzlocal import get_localzone
-    import xml.etree.ElementTree as ET
     import yt_dlp
 
 except Exception:
-    InstanceLibraries.List()
-
-if platform.system() == 'Linux':
-    try:
-        import tkinter as tk
-    except ImportError:
-        pass
-
-    try:
-        pygame.display.init()
-    except pygame.error as e:
-        pass
+    InstanceLibraries.Setup()
 
 class ClassSystem:
     def __init__(self):
@@ -164,18 +137,13 @@ class ClassSystem:
     def InitializeColors(self):
         self.ColorBlack = (15, 15, 15, 0.8) if self.DarkMode else (240, 240, 240, 0.8)
         self.ColorWhite = (255, 255, 255) if self.DarkMode else (0, 0, 0, 1)
-
         self.ColorDarkGray = (30, 30, 30, 0.6) if self.DarkMode else (225, 225, 225, 0.6)
         self.ColorLightGrey = (150, 150, 150, 0.2)
-
         self.ColorDarkBlue = (0, 44, 90)
         self.ColorLightBlue = (115, 198, 229)
-
         self.ColorDarkRed = (80, 0, 0)
         self.ColorLightRed = (120, 0, 0, 0.2)
-
         self.ColorGreen = (0, 200, 0)
-
         self.ColorYellow = (254, 227, 16)
 
     def InitializeFonts(self):
@@ -201,34 +169,17 @@ class ClassSystem:
 
     def LoadImages(self):
         try:
-            ImageFiles = [
-                "ButtonFullscreenA.png", "ButtonFullscreenB.png",
-                "ButtonHelp.png", "ButtonMap.png", "ButtonPower.png", "ButtonSettings.png",
-                "CaptureOn.png", "CaptureOff.png", 
-                "CircleBlack.png", "CircleWhite.png", "CircleRed.png", "CircleGreen.png",
-                "DPad.png", "DPadDown.png", "DPadLeft.png", "DPadRight.png", "DPadUp.png", "DPadCenter.png",
-                "FlagUS.png", "FlagMN.png",
-                "HintOn.png", "HintOff.png",
-                "LogoMNSGC.png", "LogoNASA.png", "LogoNEBP.png",
-                "TrackingOn.png", "TrackingOff.png",
-                "WifiOn.png", "WifiOff.png",
-            ]
-
-            for file in ImageFiles: setattr(self, file.split('.')[0], pygame.image.load(os.path.join(self.Resources, file)))
+            for file in os.listdir(self.Resources):
+                if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+                    setattr(self, file.split('.')[0], pygame.image.load(os.path.join(self.Resources, file)))
         except Exception:
             pass
 
     def LoadSounds(self):
         try:
-            SoundFiles = [
-                "C10000.mp3", "C20000.mp3", "C30000.mp3", "C40000.mp3", "C50000.mp3", "C60000.mp3", "C70000.mp3", "C80000.mp3", "C90000.mp3", "C100000.mp3", "C110000.mp3", "C120000.mp3",
-                "Beep.mp3", "Blop.mp3", "Buzz.mp3",
-                "Launch00.mp3", "Launch10.mp3", "Launch30.mp3", "Launch60.mp3",
-                "Static.mp3", "Switch.mp3", "Tap.mp3",
-                "RickAstley.mp3"
-            ]
-
-            for file in SoundFiles: setattr(self, file.split('.')[0], os.path.join(self.Resources, file))
+            for file in os.listdir(self.Resources):
+                if file.lower().endswith(('.mp3', '.wav', '.ogg')):
+                    setattr(self, file.split('.')[0], os.path.join(self.Resources, file))
         except Exception:
             pass
 
