@@ -19,11 +19,8 @@ class ClassLibraries:
         self.Upgrade(ExternalLibraries)
 
     def Check(self, MissingLibraries):
-        if not MissingLibraries:
-            return
-
-        for Library in MissingLibraries:
-            self.Install(Library)
+        if not MissingLibraries: return
+        for Library in MissingLibraries: self.Install(Library)
 
     def Install(self, LibraryName):
         try:
@@ -33,10 +30,8 @@ class ClassLibraries:
 
     def Upgrade(self, ExternalLibraries):
         for Library in ExternalLibraries:
-            try:
-                subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', Library], check=True)
-            except Exception:
-                pass
+            try: subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', Library], check=True)
+            except Exception: pass
 
 InstanceLibraries = ClassLibraries()
 
