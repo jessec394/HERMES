@@ -1196,7 +1196,7 @@ class ClassScreen:
                 pygame.draw.rect(InstanceSystem.Window, InstanceSystem.ColorWhite, (self.URLX, self.URLY, self.URLW, self.URLH), (3 if self.URLHover else 2))
 
                 Text = InstanceSystem.FontBahnschrift15.render("YOUTUBE LIVESTREAM URL", True, InstanceSystem.ColorWhite)
-                TextRect = Text.get_rect(midleft=(InstanceScreen.URLX + InstanceScreen.URLW / 10, InstanceScreen.URLY + InstanceScreen.URLH / 1.75))
+                TextRect = Text.get_rect(midleft=(InstanceScreen.URLX + InstanceScreen.URLW / 10, InstanceScreen.URLY + InstanceScreen.URLH / 2))
                 InstanceSystem.Window.blit(Text, TextRect)
 
             InstanceSystem.Window.blit(self.ButtonFullscreen, (self.FullscreenX - 20 * InstanceSystem.SF, self.FullscreenY - 20 * InstanceSystem.SF))
@@ -1481,7 +1481,7 @@ class ClassNavigator:
 
             # Geographic Location Display
             Text = InstanceSystem.FontBahnschrift40.render(self.Location if self.Location else "Location Unavailable", True, InstanceSystem.ColorWhite) if self.Location else InstanceSystem.FontBahnschrift30.render(self.Location if self.Location else "Location Unavailable", True, InstanceSystem.ColorWhite)
-            TextRect = Text.get_rect(midright=(1372.5 * InstanceSystem.SF, 895 * InstanceSystem.SF))
+            TextRect = Text.get_rect(midright=(1372.5 * InstanceSystem.SF, 892.5 * InstanceSystem.SF))
             InstanceSystem.Window.blit(Text, TextRect)
 
 InstanceNavigator = ClassNavigator()
@@ -1638,7 +1638,7 @@ class ClassTimer:
                     pygame.mixer.music.load(InstanceSystem.Launch00)
                     pygame.mixer.music.play()
                     self.MET = "T  - 00:00:00"
-                
+
                 InstanceOutput.Message = "Launch Timer Commenced"
 
             # Launch Timer Halt
@@ -1885,8 +1885,8 @@ class ClassControls:
             ("TRACKING", InstanceSystem.FontBahnschrift20, InstanceSystem.ColorWhite, (self.X - 160 * InstanceSystem.SF, self.Y - (80 * InstanceSystem.SF)), 'midleft'),
             ("TWEAK OFFSET", InstanceSystem.FontBahnschrift20, InstanceSystem.ColorWhite, (self.X - 260 * InstanceSystem.SF, self.Y + 40 * InstanceSystem.SF), 'midleft'),
             ("POINTING ANGLES", InstanceSystem.FontBahnschrift20, InstanceSystem.ColorWhite, (self.X, self.Y + 230 * InstanceSystem.SF), 'center'),
-            ("CLEAR ANGLES", InstanceSystem.FontBahnschrift13, InstanceSystem.ColorWhite, (self.ClearAnglesX + self.ClearAnglesW / 2, self.ClearAnglesY + self.ClearAnglesH / 1.75), 'center'),
-            ("CLEAR TWEAKS", InstanceSystem.FontBahnschrift13, InstanceSystem.ColorWhite, (self.ClearTweaksX + self.ClearTweaksW / 2, self.ClearTweaksY + self.ClearTweaksH / 1.75), 'center')
+            ("CLEAR ANGLES", InstanceSystem.FontBahnschrift13, InstanceSystem.ColorWhite, (self.ClearAnglesX + self.ClearAnglesW / 2, self.ClearAnglesY + self.ClearAnglesH / 2), 'center'),
+            ("CLEAR TWEAKS", InstanceSystem.FontBahnschrift13, InstanceSystem.ColorWhite, (self.ClearTweaksX + self.ClearTweaksW / 2, self.ClearTweaksY + self.ClearTweaksH / 2), 'center')
         ]
 
         self.Images = [
@@ -2233,11 +2233,11 @@ class ClassVent:
         ]
 
         self.Texts = [
-            (InstanceSystem.FontBahnschrift20, "REMOVE GUARD", InstanceSystem.ColorWhite, (self.GuardClosedX + self.GuardClosedW / 2, self.GuardClosedY + self.GuardClosedH / 1.75), True),
-            (InstanceSystem.FontBahnschrift20, "IRIDIUM IMEI", InstanceSystem.ColorWhite, (self.IMEIX + self.IMEIW / 2, self.IMEIY + self.IMEIH / 1.75), True),
-            (InstanceSystem.FontBahnschrift20, "REPLACE GUARD", InstanceSystem.ColorWhite, (self.GuardOpenX + self.GuardOpenW / 2, self.GuardOpenY + self.GuardOpenH / 1.75), False),
-            (InstanceSystem.FontBahnschrift20, "VENT", InstanceSystem.ColorWhite, (self.VentX + self.VentW / 2, self.VentY + self.VentH / 1.75), False),
-            (InstanceSystem.FontBahnschrift20, "CUT", InstanceSystem.ColorWhite, (self.CutX + self.CutW / 2, self.CutY + self.CutH / 1.75), False)
+            (InstanceSystem.FontBahnschrift20, "REMOVE GUARD", InstanceSystem.ColorWhite, (self.GuardClosedX + self.GuardClosedW / 2, self.GuardClosedY + self.GuardClosedH / 2), True),
+            (InstanceSystem.FontBahnschrift20, "IRIDIUM IMEI", InstanceSystem.ColorWhite, (self.IMEIX + self.IMEIW / 2, self.IMEIY + self.IMEIH / 2), True),
+            (InstanceSystem.FontBahnschrift20, "REPLACE GUARD", InstanceSystem.ColorWhite, (self.GuardOpenX + self.GuardOpenW / 2, self.GuardOpenY + self.GuardOpenH / 2), False),
+            (InstanceSystem.FontBahnschrift20, "VENT", InstanceSystem.ColorWhite, (self.VentX + self.VentW / 2, self.VentY + self.VentH / 2), False),
+            (InstanceSystem.FontBahnschrift20, "CUT", InstanceSystem.ColorWhite, (self.CutX + self.CutW / 2, self.CutY + self.CutH / 2), False)
         ]
 
     def Display(self):
@@ -3624,61 +3624,61 @@ class ClassSettings:
         self.Texts = [
             (InstanceSystem.FontImpact80, "SETTINGS", InstanceSystem.ColorWhite, 'Center', (self.MenuX + self.MenuW / 2, self.MenuY)),
             (InstanceSystem.FontBahnschrift30, "UI SCALE", InstanceSystem.ColorWhite, 'Left', (360 * InstanceSystem.SF, 280 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "UI WIDTH", InstanceSystem.ColorWhite, 'Center', (self.WidthX + self.WidthW / 2, self.WidthY + self.WidthH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "UI WIDTH", InstanceSystem.ColorWhite, 'Center', (self.HeightX + self.HeightW / 2, self.HeightY + self.HeightH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "UI WIDTH", InstanceSystem.ColorWhite, 'Center', (self.WidthX + self.WidthW / 2, self.WidthY + self.WidthH / 2)),
+            (InstanceSystem.FontBahnschrift15, "UI WIDTH", InstanceSystem.ColorWhite, 'Center', (self.HeightX + self.HeightW / 2, self.HeightY + self.HeightH / 2)),
             (InstanceSystem.FontBahnschrift30, "PERIPHERALS", InstanceSystem.ColorWhite, 'Left', (360 * InstanceSystem.SF, 395 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift25, "Altimeter", InstanceSystem.ColorWhite, 'Left', (self.AltimeterX + 1.5 * self.AltimeterW, self.AltimeterY + self.AltimeterH / 1.75)),
-            (InstanceSystem.FontBahnschrift25, "Navigator", InstanceSystem.ColorWhite, 'Left', (self.NavigatorX + 1.5 * self.NavigatorW, self.NavigatorY + self.NavigatorH / 1.75)),
-            (InstanceSystem.FontBahnschrift25, "Compass", InstanceSystem.ColorWhite, 'Left', (self.CompassX + 1.5 * self.CompassW, self.CompassY + self.CompassH / 1.75)),
-            (InstanceSystem.FontBahnschrift25, "Timer", InstanceSystem.ColorWhite, 'Left', (self.TimerX + 1.5 * self.TimerW, self.TimerY + self.TimerH / 1.75)),
+            (InstanceSystem.FontBahnschrift25, "Altimeter", InstanceSystem.ColorWhite, 'Left', (self.AltimeterX + 1.5 * self.AltimeterW, self.AltimeterY + self.AltimeterH / 2)),
+            (InstanceSystem.FontBahnschrift25, "Navigator", InstanceSystem.ColorWhite, 'Left', (self.NavigatorX + 1.5 * self.NavigatorW, self.NavigatorY + self.NavigatorH / 2)),
+            (InstanceSystem.FontBahnschrift25, "Compass", InstanceSystem.ColorWhite, 'Left', (self.CompassX + 1.5 * self.CompassW, self.CompassY + self.CompassH / 2)),
+            (InstanceSystem.FontBahnschrift25, "Timer", InstanceSystem.ColorWhite, 'Left', (self.TimerX + 1.5 * self.TimerW, self.TimerY + self.TimerH / 2)),
             (InstanceSystem.FontBahnschrift30, "Automatic Radio Tracking", InstanceSystem.ColorWhite, 'Left', (360 * InstanceSystem.SF, 630 * InstanceSystem.SF)),
             (InstanceSystem.FontBahnschrift25, "Disable for Manual Entry", InstanceSystem.ColorWhite, 'Left', (self.ManualCoordsX + 2 * self.ManualCoordsR, self.ManualCoordsY)),
-            (InstanceSystem.FontBahnschrift15, "PAYLOAD LAT", InstanceSystem.ColorLightGrey, 'Center', (self.PayloadLatX + self.PayloadLatW / 2, self.PayloadLatY + self.PayloadLatH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "PAYLOAD LON", InstanceSystem.ColorLightGrey, 'Center', (self.PayloadLonX + self.PayloadLonW / 2, self.PayloadLonY + self.PayloadLonH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "PAYLOAD ALT", InstanceSystem.ColorLightGrey, 'Center', (self.PayloadAltX + self.PayloadAltW / 2, self.PayloadAltY + self.PayloadAltH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "TRACKER LAT", InstanceSystem.ColorWhite, 'Center', (self.TrackerLatX + self.TrackerLatW / 2, self.TrackerLatY + self.TrackerLatH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "TRACKER LON", InstanceSystem.ColorWhite, 'Center', (self.TrackerLonX + self.TrackerLonW / 2, self.TrackerLonY + self.TrackerLonH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "TRACKER ALT", InstanceSystem.ColorWhite, 'Center', (self.TrackerAltX + self.TrackerAltW / 2, self.TrackerAltY + self.TrackerAltH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "PAYLOAD LAT", InstanceSystem.ColorLightGrey, 'Center', (self.PayloadLatX + self.PayloadLatW / 2, self.PayloadLatY + self.PayloadLatH / 2)),
+            (InstanceSystem.FontBahnschrift15, "PAYLOAD LON", InstanceSystem.ColorLightGrey, 'Center', (self.PayloadLonX + self.PayloadLonW / 2, self.PayloadLonY + self.PayloadLonH / 2)),
+            (InstanceSystem.FontBahnschrift15, "PAYLOAD ALT", InstanceSystem.ColorLightGrey, 'Center', (self.PayloadAltX + self.PayloadAltW / 2, self.PayloadAltY + self.PayloadAltH / 2)),
+            (InstanceSystem.FontBahnschrift15, "TRACKER LAT", InstanceSystem.ColorWhite, 'Center', (self.TrackerLatX + self.TrackerLatW / 2, self.TrackerLatY + self.TrackerLatH / 2)),
+            (InstanceSystem.FontBahnschrift15, "TRACKER LON", InstanceSystem.ColorWhite, 'Center', (self.TrackerLonX + self.TrackerLonW / 2, self.TrackerLonY + self.TrackerLonH / 2)),
+            (InstanceSystem.FontBahnschrift15, "TRACKER ALT", InstanceSystem.ColorWhite, 'Center', (self.TrackerAltX + self.TrackerAltW / 2, self.TrackerAltY + self.TrackerAltH / 2)),
             (InstanceSystem.FontBahnschrift15, "", InstanceSystem.ColorWhite, 'Center', (550 * InstanceSystem.SF, 820 * InstanceSystem.SF)),
             (InstanceSystem.FontBahnschrift15, "", InstanceSystem.ColorWhite, 'Center', (550 * InstanceSystem.SF, 840 * InstanceSystem.SF)),
             (InstanceSystem.FontBahnschrift30, "GUIDED DESCENT", InstanceSystem.ColorWhite, 'Left', (845 * InstanceSystem.SF, 280 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "TARGET LAT", InstanceSystem.ColorWhite, 'Center', (self.TargetLatX + self.TargetLatW / 2, self.TargetLatY + self.TargetLatH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "TARGET LON", InstanceSystem.ColorWhite, 'Center', (self.TargetLonX + self.TargetLonW / 2, self.TargetLonY + self.TargetLonH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "SAME AS TRACKER", InstanceSystem.ColorWhite, 'Left', (self.AutoDescentX + 1.5 * self.AutoDescentW, self.AutoDescentY + self.AutoDescentH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "TARGET LAT", InstanceSystem.ColorWhite, 'Center', (self.TargetLatX + self.TargetLatW / 2, self.TargetLatY + self.TargetLatH / 2)),
+            (InstanceSystem.FontBahnschrift15, "TARGET LON", InstanceSystem.ColorWhite, 'Center', (self.TargetLonX + self.TargetLonW / 2, self.TargetLonY + self.TargetLonH / 2)),
+            (InstanceSystem.FontBahnschrift15, "SAME AS TRACKER", InstanceSystem.ColorWhite, 'Left', (self.AutoDescentX + 1.5 * self.AutoDescentW, self.AutoDescentY + self.AutoDescentH / 2)),
             (InstanceSystem.FontBahnschrift30, "SERIAL COMMUNICATION", InstanceSystem.ColorWhite, 'Left', (845 * InstanceSystem.SF, 395 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "RFD COM", InstanceSystem.ColorLightGrey, 'Center', (self.COMRFDX + self.COMRFDW / 2, self.COMRFDY + self.COMRFDH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "ARDUINO COM", InstanceSystem.ColorLightGrey, 'Center', (self.COMArduinoX + self.COMArduinoW / 2, self.COMArduinoY + self.COMArduinoH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "AUTO COM PORT DETECTION", InstanceSystem.ColorWhite, 'Left', (self.AutoCOMX + 1.5 * self.AutoCOMW, self.AutoCOMY + self.AutoCOMH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "RFD COM", InstanceSystem.ColorLightGrey, 'Center', (self.COMRFDX + self.COMRFDW / 2, self.COMRFDY + self.COMRFDH / 2)),
+            (InstanceSystem.FontBahnschrift15, "ARDUINO COM", InstanceSystem.ColorLightGrey, 'Center', (self.COMArduinoX + self.COMArduinoW / 2, self.COMArduinoY + self.COMArduinoH / 2)),
+            (InstanceSystem.FontBahnschrift15, "AUTO COM PORT DETECTION", InstanceSystem.ColorWhite, 'Left', (self.AutoCOMX + 1.5 * self.AutoCOMW, self.AutoCOMY + self.AutoCOMH / 2)),
             (InstanceSystem.FontBahnschrift25, "Dark Mode", InstanceSystem.ColorWhite, 'Left', (self.DarkModeX + 2 * self.DarkModeR, self.DarkModeY)),
             (InstanceSystem.FontBahnschrift25, "Metric Units", InstanceSystem.ColorWhite, 'Left', (self.MetricUnitsX + 2 * self.MetricUnitsR, self.MetricUnitsY)),
             (InstanceSystem.FontBahnschrift30, "Automatic Vent Commanding", InstanceSystem.ColorWhite, 'Left', (845 * InstanceSystem.SF, 630 * InstanceSystem.SF)),
             (InstanceSystem.FontBahnschrift25, "Enable for Automatic Float", InstanceSystem.ColorWhite, 'Left', (self.AutoVentX + 2 * self.AutoVentR, self.AutoVentY)),
             (InstanceSystem.FontBahnschrift20, "BEGIN VENTING AT", InstanceSystem.ColorWhite, 'Center', (930 * InstanceSystem.SF, 730 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "ALTITUDE (ft)", InstanceSystem.ColorLightGrey, 'Center', (self.VentAltOpenX + self.VentAltOpenW / 4, self.VentAltOpenY + self.VentAltOpenH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "ALTITUDE (ft)", InstanceSystem.ColorLightGrey, 'Center', (self.VentAltOpenX + self.VentAltOpenW / 4, self.VentAltOpenY + self.VentAltOpenH / 2)),
             (InstanceSystem.FontBahnschrift20, "CLOSE AT            OR", InstanceSystem.ColorWhite, 'Left', (845 * InstanceSystem.SF, 785 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "ft/s", InstanceSystem.ColorLightGrey, 'Center', (self.VentVelCloseX + self.VentVelCloseW / 2, self.VentVelCloseY + self.VentVelCloseH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "ALTITUDE (ft)", InstanceSystem.ColorLightGrey, 'Center', (self.VentAltCloseX + self.VentAltCloseW / 4, self.VentAltCloseY + self.VentAltCloseH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "ft/s", InstanceSystem.ColorLightGrey, 'Center', (self.VentVelCloseX + self.VentVelCloseW / 2, self.VentVelCloseY + self.VentVelCloseH / 2)),
+            (InstanceSystem.FontBahnschrift15, "ALTITUDE (ft)", InstanceSystem.ColorLightGrey, 'Center', (self.VentAltCloseX + self.VentAltCloseW / 4, self.VentAltCloseY + self.VentAltCloseH / 2)),
             (InstanceSystem.FontBahnschrift15, "", InstanceSystem.ColorLightGrey, 'Center', (1060 * InstanceSystem.SF, 820 * InstanceSystem.SF)),
             (InstanceSystem.FontBahnschrift30, "CONNECTIONS", InstanceSystem.ColorWhite, 'Left', (1365 * InstanceSystem.SF, 280 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "IRIDIUM MODEM", InstanceSystem.ColorWhite, 'Center', (self.IridiumX + self.IridiumW / 2, self.IridiumY + self.IridiumH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "APRS CALLSIGN", InstanceSystem.ColorWhite, 'Center', (self.APRSX + self.APRSW / 2, self.APRSY + self.APRSH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "STREAM IP", InstanceSystem.ColorWhite, 'Center', (self.UbiquitiX + self.UbiquitiW / 2, self.UbiquitiY + self.UbiquitiH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "IRIDIUM MODEM", InstanceSystem.ColorWhite, 'Center', (self.IridiumX + self.IridiumW / 2, self.IridiumY + self.IridiumH / 2)),
+            (InstanceSystem.FontBahnschrift15, "APRS CALLSIGN", InstanceSystem.ColorWhite, 'Center', (self.APRSX + self.APRSW / 2, self.APRSY + self.APRSH / 2)),
+            (InstanceSystem.FontBahnschrift15, "STREAM IP", InstanceSystem.ColorWhite, 'Center', (self.UbiquitiX + self.UbiquitiW / 2, self.UbiquitiY + self.UbiquitiH / 2)),
             (InstanceSystem.FontBahnschrift30, "DATA PARSERS", InstanceSystem.ColorWhite, 'Left', (1365 * InstanceSystem.SF, 460 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "RFD", InstanceSystem.ColorWhite, 'Center', (self.Parser1X + self.Parser1W / 2, self.Parser1Y + self.Parser1H / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "IRIDIUM", InstanceSystem.ColorWhite, 'Center', (self.Parser2X + self.Parser2W / 2, self.Parser2Y + self.Parser2H / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "APRS", InstanceSystem.ColorWhite, 'Center', (self.Parser3X + self.Parser3W / 2, self.Parser3Y + self.Parser3H / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "RFD", InstanceSystem.ColorWhite, 'Center', (self.Parser1X + self.Parser1W / 2, self.Parser1Y + self.Parser1H / 2)),
+            (InstanceSystem.FontBahnschrift15, "IRIDIUM", InstanceSystem.ColorWhite, 'Center', (self.Parser2X + self.Parser2W / 2, self.Parser2Y + self.Parser2H / 2)),
+            (InstanceSystem.FontBahnschrift15, "APRS", InstanceSystem.ColorWhite, 'Center', (self.Parser3X + self.Parser3W / 2, self.Parser3Y + self.Parser3H / 2)),
             (InstanceSystem.FontBahnschrift30, "PREDICTIONS", InstanceSystem.ColorWhite, 'Left', (1365 * InstanceSystem.SF, 550 * InstanceSystem.SF)),
-            (InstanceSystem.FontBahnschrift15, "LAT", InstanceSystem.ColorWhite, 'Center', (self.PredictionLatX + self.PredictionLatW / 2, self.PredictionLatY + self.PredictionLatH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "LON", InstanceSystem.ColorWhite, 'Center', (self.PredictionLonX + self.PredictionLonW / 2, self.PredictionLonY + self.PredictionLonH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "ALT", InstanceSystem.ColorWhite, 'Center', (self.PredictionAltX + self.PredictionAltW / 2, self.PredictionAltY + self.PredictionAltH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "ASCENT", InstanceSystem.ColorWhite, 'Center', (self.PredictionAscentX + self.PredictionAscentW / 2, self.PredictionAscentY + self.PredictionAscentH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "DESCENT", InstanceSystem.ColorWhite, 'Center', (self.PredictionDescentX + self.PredictionDescentW / 2, self.PredictionDescentY + self.PredictionDescentH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "FINAL ALTITUDE", InstanceSystem.ColorWhite, 'Center', (self.PredictionFinalAltX + self.PredictionFinalAltW / 2, self.PredictionFinalAltY + self.PredictionFinalAltH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "DATE", InstanceSystem.ColorWhite, 'Center', (self.PredictionDateX + self.PredictionDateW / 2, self.PredictionDateY + self.PredictionDateH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "TIME", InstanceSystem.ColorWhite, 'Center', (self.PredictionTimeX + self.PredictionTimeW / 2, self.PredictionTimeY + self.PredictionTimeH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "FLOAT ALT", InstanceSystem.ColorWhite, 'Center', (self.PredictionFloatAltX + self.PredictionFloatAltW / 2, self.PredictionFloatAltY + self.PredictionFloatAltH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "FLOAT TIME", InstanceSystem.ColorWhite, 'Center', (self.PredictionFloatTimeX + self.PredictionFloatTimeW / 2, self.PredictionFloatTimeY + self.PredictionFloatTimeH / 1.75)),
-            (InstanceSystem.FontBahnschrift15, "RUN FLIGHT PREDICTIONS", InstanceSystem.ColorWhite, 'Center', (self.RunPredictionsX + self.RunPredictionsW / 2, self.RunPredictionsY + self.RunPredictionsH / 1.75)),
+            (InstanceSystem.FontBahnschrift15, "LAT", InstanceSystem.ColorWhite, 'Center', (self.PredictionLatX + self.PredictionLatW / 2, self.PredictionLatY + self.PredictionLatH / 2)),
+            (InstanceSystem.FontBahnschrift15, "LON", InstanceSystem.ColorWhite, 'Center', (self.PredictionLonX + self.PredictionLonW / 2, self.PredictionLonY + self.PredictionLonH / 2)),
+            (InstanceSystem.FontBahnschrift15, "ALT", InstanceSystem.ColorWhite, 'Center', (self.PredictionAltX + self.PredictionAltW / 2, self.PredictionAltY + self.PredictionAltH / 2)),
+            (InstanceSystem.FontBahnschrift15, "ASCENT", InstanceSystem.ColorWhite, 'Center', (self.PredictionAscentX + self.PredictionAscentW / 2, self.PredictionAscentY + self.PredictionAscentH / 2)),
+            (InstanceSystem.FontBahnschrift15, "DESCENT", InstanceSystem.ColorWhite, 'Center', (self.PredictionDescentX + self.PredictionDescentW / 2, self.PredictionDescentY + self.PredictionDescentH / 2)),
+            (InstanceSystem.FontBahnschrift15, "FINAL ALTITUDE", InstanceSystem.ColorWhite, 'Center', (self.PredictionFinalAltX + self.PredictionFinalAltW / 2, self.PredictionFinalAltY + self.PredictionFinalAltH / 2)),
+            (InstanceSystem.FontBahnschrift15, "DATE", InstanceSystem.ColorWhite, 'Center', (self.PredictionDateX + self.PredictionDateW / 2, self.PredictionDateY + self.PredictionDateH / 2)),
+            (InstanceSystem.FontBahnschrift15, "TIME", InstanceSystem.ColorWhite, 'Center', (self.PredictionTimeX + self.PredictionTimeW / 2, self.PredictionTimeY + self.PredictionTimeH / 2)),
+            (InstanceSystem.FontBahnschrift15, "FLOAT ALT", InstanceSystem.ColorWhite, 'Center', (self.PredictionFloatAltX + self.PredictionFloatAltW / 2, self.PredictionFloatAltY + self.PredictionFloatAltH / 2)),
+            (InstanceSystem.FontBahnschrift15, "FLOAT TIME", InstanceSystem.ColorWhite, 'Center', (self.PredictionFloatTimeX + self.PredictionFloatTimeW / 2, self.PredictionFloatTimeY + self.PredictionFloatTimeH / 2)),
+            (InstanceSystem.FontBahnschrift15, "RUN FLIGHT PREDICTIONS", InstanceSystem.ColorWhite, 'Center', (self.RunPredictionsX + self.RunPredictionsW / 2, self.RunPredictionsY + self.RunPredictionsH / 2)),
             (InstanceSystem.FontBahnschrift15, "HERMES RELEASE VERSION 1.16 | PRODUCED AND TESTED BY NASA'S MINNESOTA SPACE GRANT CONSORTIUM (MnSGC) AT THE UNIVERSITY OF MINNESOTA TWIN CITIES", InstanceSystem.ColorWhite, 'Center', (self.MenuX + self.MenuW / 2, self.MenuY + self.MenuH - self.MenuH / 32))
         ]
 
