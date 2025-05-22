@@ -583,7 +583,7 @@ class ClassAPRS:
             Parameters = {
                 'name': self.Callsign,
                 'what': 'loc',
-                'apikey': '186239.PvPtIQBgYaOM92d',
+                'apikey': 'PLACEHOLDER',
                 'format': 'xml'
             }
 
@@ -627,7 +627,7 @@ class ClassAPRS:
                     Parameters = {
                         'name': self.Callsign,
                         'what': 'loc',
-                        'apikey': '186239.PvPtIQBgYaOM92d',
+                        'apikey': 'PLACEHOLDER',
                         'format': 'xml'
                     }
 
@@ -2213,7 +2213,7 @@ class ClassVent:
 
         self.AltOpen = self.AltClose = self.VelClose = None
 
-        self.EmailSender = base64.b64decode("bmVicGlyaWRpdW1jb21tYW5kQGdtYWlsLmNvbQ==").decode('utf-8')
+        self.EmailSender = 'PLACEHOLDER'
         self.EmailReceiver = "data@sbd.iridium.com"
         self.EmailSubject = self.EmailBody = self.EmailAttachment = self.Command = ""
 
@@ -3343,7 +3343,7 @@ class ClassButtons:
 
     def HelpClick(self):
         try:
-            webbrowser.open('https://docs.google.com/document/d/1PRoLkXaMrUWXbg3vbNBbG_Q1igPCRx8imRnfndy7S-0/edit?usp=sharing')
+            webbrowser.open('https://docs.google.com/document/d/1o5DzYlDGw8EA5sNgJ2KQhO6NBD3abbEZ3APZ8Fw8ue4/edit?usp=sharing')
         except Exception as e:
             InstanceErrors.Message = e
 
