@@ -1,14 +1,14 @@
 import subprocess
 import sys
-import platform
 
-class ClassLibraries:
+class libraries:
     def Pip(self):
         try: subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
         except subprocess.CalledProcessError: subprocess.run([sys.executable, '-m', 'ensurepip', '--default-pip'], check=True)
 
     def Setup(self):
-        ExternalLibraries = ['clipboard', 'email_validator', 'folium', 'geocoder', 'geopandas', 'getgfs', 'keyboard', 'matplotlib', 'mpl_toolkits', 'numpy', 'opencv-python', 'pafy', 'pandas', 'pyautogui', 'pygame', 'pyproj', 'pyserial', 'requests', 'scipy', 'serial', 'Shapely', 'simplekml', 'streamlink', 'tzlocal', 'yt_dlp']
+        ExternalLibraries = ['clipboard', 'cv2' 'geocoder', 'geopandas', 'getgfs', 'keyboard', 'matplotlib', 'numpy', 'pandas', 
+                             'pygame', 'pyproj', 'requests', 'scipy', 'serial', 'shapely', 'simplekml', 'tzlocal', 'yt_dlp']
         MissingLibraries = []
 
         for library in ExternalLibraries:
@@ -33,7 +33,7 @@ class ClassLibraries:
             try: subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', Library], check=True)
             except Exception: pass
 
-InstanceLibraries = ClassLibraries()
+python_libraries = libraries()
 
 try:
     # Standard Libraries
@@ -48,7 +48,6 @@ try:
     import re
     import smtplib
     import socket
-    import ssl
     import threading
     import time
     import tkinter as tk
@@ -59,35 +58,27 @@ try:
     # Third-Party Libraries
     import clipboard
     import cv2
-    from email.message import EmailMessage
     import geocoder
     import geopandas as gpd
     from getgfs import Forecast, url, Coordinate, Variable
     import keyboard
-    from matplotlib.collections import PatchCollection
-    import matplotlib.dates as mdates
-    from matplotlib.dates import DateFormatter, AutoDateLocator
-    from mpl_toolkits.mplot3d import Axes3D
     import matplotlib.pyplot as plt
+    import matplotlib.ticker as plticker
     import numpy as np
     import pandas as pd
-    import pyautogui
     import pygame
-    import pygame.gfxdraw
     from pygame.locals import QUIT
     from pyproj import Transformer
     import requests
     from scipy.interpolate import interp1d
     import serial.tools.list_ports
-    from shapely.geometry import box, shape, LineString, MultiLineString, Point, Polygon
-    from shapely.strtree import STRtree
+    from shapely.geometry import shape, LineString, Polygon
     import simplekml
-    import streamlink
     from tzlocal import get_localzone
     import yt_dlp
 
 except Exception:
-    InstanceLibraries.Setup()
+    python_libraries.Setup()
 
 class ClassSystem:
     def __init__(self):
@@ -119,6 +110,7 @@ class ClassSystem:
         self.DarkMode = True
         self.MetricUnits = False
         self.Fullscreen = False
+        self.Startup_Screen = True
         self.Date = datetime.datetime.now().strftime("%Y%m%d")
         self.Clock = pygame.time.Clock()
         self.Lock = threading.Lock()
@@ -180,14 +172,15 @@ class ClassSystem:
 
     def SetPreferences(self):
         FilePath = os.path.join(self.Directory, "Preferences.json")
-        PreferencesKeys = ["Window Width", "Window Height", "Metric Units", "Dark Mode"]
+        PreferencesKeys = ["Window Width", "Window Height", "Metric Units", "Dark Mode", "Startup Screen"]
 
         def DefaultPreferences():
             Preferences = {
                 "Window Width": self.W,
                 "Window Height": self.H,
                 "Metric Units": self.MetricUnits,
-                "Dark Mode": self.DarkMode
+                "Dark Mode": self.DarkMode,
+                "Startup Screen": self.Startup_Screen
             }
 
             with open(FilePath, 'w') as file: json.dump(Preferences, file, indent=4)
@@ -201,6 +194,7 @@ class ClassSystem:
                     self.H = Data.get("Window Height", self.H)
                     self.MetricUnits = Data.get("Metric Units", self.MetricUnits)
                     self.DarkMode = Data.get("Dark Mode", self.DarkMode)
+                    self.Startup_Screen = Data.get("Startup Screen", self.Startup_Screen)
                 else: DefaultPreferences()
             except Exception:
                 DefaultPreferences()
@@ -214,7 +208,8 @@ class ClassSystem:
             "Window Width": self.W,
             "Window Height": self.H,
             "Metric Units": self.MetricUnits,
-            "Dark Mode": self.DarkMode
+            "Dark Mode": self.DarkMode,
+            "Startup Screen": self.Startup_Screen
         }
 
         FilePath = os.path.join(self.Directory, "Preferences.json")
@@ -265,36 +260,39 @@ class ClassSystem:
             pass
 
     def Startup(self):
-        pygame.display.set_caption("HERMES")
-        pygame.mouse.set_pos((self.W, self.H))
-        pygame.display.set_icon(pygame.image.load(os.path.join(self.Resources, "LogoMNSGC.png")))
-        locale.setlocale(locale.LC_ALL, '')
+        if self.Startup_Screen == True:
+            pygame.display.set_caption("HERMES")
+            pygame.mouse.set_pos((self.W, self.H))
+            pygame.display.set_icon(pygame.image.load(os.path.join(self.Resources, "LogoMNSGC.png")))
+            locale.setlocale(locale.LC_ALL, '')
 
-        LogoSurface = pygame.Surface((self.W, self.H))
-        LogoSurface.fill((self.ColorBlack if self.DarkMode else InstanceSystem.ColorWhite))
+            LogoSurface = pygame.Surface((self.W, self.H))
+            LogoSurface.fill((self.ColorBlack if self.DarkMode else self.ColorWhite))
 
-        LogoRect = self.LogoMNSGC.get_rect(center=(self.W / 2, self.H / 2))
-        LogoArea = LogoRect.inflate(10, 10)
+            LogoRect = self.LogoMNSGC.get_rect(center=(self.W / 2, self.H / 2))
+            LogoArea = LogoRect.inflate(10, 10)
 
-        Stars = []
-        while len(Stars) < 100:
-            x = random.randint(0, int(self.W) - 1)
-            y = random.randint(0, int(self.H) - 1)
-            if not LogoArea.collidepoint(x, y):
-                Stars.append((x, y))
+            Stars = []
+            while len(Stars) < 100:
+                x = random.randint(0, int(self.W) - 1)
+                y = random.randint(0, int(self.H) - 1)
+                if not LogoArea.collidepoint(x, y):
+                    Stars.append((x, y))
 
-        for x, y in Stars: pygame.draw.circle(LogoSurface, (255, 255, 255), (x, y), 1)
+            for x, y in Stars: pygame.draw.circle(LogoSurface, (255, 255, 255), (x, y), 1)
 
-        for alpha in range(0, 255, 1):
-            pygame.transform.smoothscale(InstanceSystem.LogoMNSGC, (800 * InstanceSystem.SF, 800 * InstanceSystem.SF))
+            for alpha in range(0, 255, 1):
+                pygame.transform.smoothscale(self.LogoMNSGC, (800 * self.SF, 800 * self.SF))
 
-            LogoSurface.set_alpha(alpha)
-            self.Window.blit(LogoSurface, (0, 0))
-            self.LogoMNSGC.set_alpha(alpha)
-            self.Window.blit(self.LogoMNSGC, ((self.W - self.LogoMNSGC.get_width()) / 2, (self.H - self.LogoMNSGC.get_height()) / 2))
+                LogoSurface.set_alpha(alpha)
+                self.Window.blit(LogoSurface, (0, 0))
+                self.LogoMNSGC.set_alpha(alpha)
+                self.Window.blit(self.LogoMNSGC, ((self.W - self.LogoMNSGC.get_width()) / 2, (self.H - self.LogoMNSGC.get_height()) / 2))
 
-            pygame.display.flip()
-            pygame.time.delay(10)
+                pygame.display.flip()
+                pygame.time.delay(10)
+        else:
+            pass
 
     def Shutdown(self):
         InstanceRFD.Close()
@@ -431,7 +429,8 @@ class ClassRFD:
 
                             self.Timestamp = ''.join([year, month, day, hour, minute, sec])
 
-                            DataRow = [packet, siv, fix, lat, lon, alt, year, month, day, hour, minute, sec, nedN, nedE, nedD, bat, bat33, bat51, bat52, aint, aext, ptemp, dint, dent, pres, ax, ay, az, pitch, roll, yaw]
+                            DataRow = [packet, siv, fix, lat, lon, alt, year, month, day, hour, minute, sec, nedN, nedE, nedD, bat, bat33, bat51, bat52, 
+                                       aint, aext, ptemp, dint, dent, pres, ax, ay, az, pitch, roll, yaw]
 
                             if self.FileWrite:
                                 try:
@@ -583,7 +582,7 @@ class ClassAPRS:
             Parameters = {
                 'name': self.Callsign,
                 'what': 'loc',
-                'apikey': 'PLACEHOLDER',
+                'apikey': '186239.PvPtIQBgYaOM92d',
                 'format': 'xml'
             }
 
@@ -627,7 +626,7 @@ class ClassAPRS:
                     Parameters = {
                         'name': self.Callsign,
                         'what': 'loc',
-                        'apikey': 'PLACEHOLDER',
+                        'apikey': '186239.PvPtIQBgYaOM92d',
                         'format': 'xml'
                     }
 
@@ -1196,7 +1195,7 @@ class ClassScreen:
                 pygame.draw.rect(InstanceSystem.Window, InstanceSystem.ColorWhite, (self.URLX, self.URLY, self.URLW, self.URLH), (3 if self.URLHover else 2))
 
                 Text = InstanceSystem.FontBahnschrift15.render("YOUTUBE LIVESTREAM URL", True, InstanceSystem.ColorWhite)
-                TextRect = Text.get_rect(midleft=(InstanceScreen.URLX + InstanceScreen.URLW / 10, InstanceScreen.URLY + InstanceScreen.URLH / 2))
+                TextRect = Text.get_rect(midleft=(self.URLX + self.URLW / 10, self.URLY + self.URLH / 2))
                 InstanceSystem.Window.blit(Text, TextRect)
 
             InstanceSystem.Window.blit(self.ButtonFullscreen, (self.FullscreenX - 20 * InstanceSystem.SF, self.FullscreenY - 20 * InstanceSystem.SF))
@@ -2125,7 +2124,7 @@ class ClassLaunch:
                 TextRect = Text.get_rect(center=text["pos"])
                 InstanceSystem.Window.blit(Text, TextRect)
 
-            if InstanceLaunch.Reset1 and InstanceLaunch.Reset2 and InstanceLaunch.Reset3 and InstanceLaunch.Reset4:
+            if self.Reset1 and self.Reset2 and self.Reset3 and self.Reset4:
                 time.sleep(0.5)
 
                 pygame.mixer.music.load(InstanceSystem.Beep)
@@ -2177,20 +2176,20 @@ class ClassLaunch:
     def Countdown1Click(self):
         pygame.mixer.music.load(InstanceSystem.Switch)
         pygame.mixer.music.play()
-        InstanceLaunch.Countdown2 = InstanceLaunch.Countdown3 = False
-        InstanceLaunch.Countdown1 = True
+        self.Countdown2 = self.Countdown3 = False
+        self.Countdown1 = True
 
     def Countdown2Click(self):
         pygame.mixer.music.load(InstanceSystem.Switch)
         pygame.mixer.music.play()
-        InstanceLaunch.Countdown1 = InstanceLaunch.Countdown3 = False
-        InstanceLaunch.Countdown2 = True
+        self.Countdown1 = self.Countdown3 = False
+        self.Countdown2 = True
 
     def Countdown3Click(self):
         pygame.mixer.music.load(InstanceSystem.Switch)
         pygame.mixer.music.play()
-        InstanceLaunch.Countdown1 = InstanceLaunch.Countdown2 = False
-        InstanceLaunch.Countdown3 = True
+        self.Countdown1 = self.Countdown2 = False
+        self.Countdown3 = True
 
 InstanceLaunch = ClassLaunch()
 
@@ -2213,7 +2212,7 @@ class ClassVent:
 
         self.AltOpen = self.AltClose = self.VelClose = None
 
-        self.EmailSender = 'PLACEHOLDER'
+        self.EmailSender = base64.b64decode("bmVicGlyaWRpdW1jb21tYW5kQGdtYWlsLmNvbQ==").decode('utf-8')
         self.EmailReceiver = "data@sbd.iridium.com"
         self.EmailSubject = self.EmailBody = self.EmailAttachment = self.Command = ""
 
@@ -2435,16 +2434,16 @@ Content-Transfer-Encoding: base64
             pygame.mixer.music.load(InstanceSystem.Switch)
             pygame.mixer.music.play()
 
-            InstanceVent.Guard = False
+            self.Guard = False
             InputIMEI = False
 
     def GuardOpenClick(self):
         global InputIMEI
-        if not InstanceVent.Guard:
+        if not self.Guard:
             pygame.mixer.music.load(InstanceSystem.Switch)
             pygame.mixer.music.play()
 
-            InstanceVent.Guard = True
+            self.Guard = True
             InputIMEI = False
 
     def VentClick(self):
@@ -2665,10 +2664,10 @@ class ClassMaps:
             ax.set_ylim(MinY, MaxY)
             ax.set_zlim(MinZ, MaxZ)
 
-            InstanceMaps.PlotRivers(ax, '3D', MinX, MaxX, MinY, MaxY)
-            InstanceMaps.PlotRoads(ax, '3D', MinX, MaxX, MinY, MaxY)
-            InstanceMaps.PlotCounties(ax, '3D', MinX, MaxX, MinY, MaxY)
-            InstanceMaps.PlotCities(ax, '3D', MinX, MaxX, MinY, MaxY)
+            self.PlotRivers(ax, '3D', MinX, MaxX, MinY, MaxY)
+            self.PlotRoads(ax, '3D', MinX, MaxX, MinY, MaxY)
+            self.PlotCounties(ax, '3D', MinX, MaxX, MinY, MaxY)
+            self.PlotCities(ax, '3D', MinX, MaxX, MinY, MaxY)
 
             if len(InterpolatedPoints) > 1:
                 xPoints, yPoints, zPoints = zip(*InterpolatedPoints)
@@ -2706,46 +2705,87 @@ class ClassMaps:
             FilePath = None
 
     def ParserPlot(self, Data):
+
+        print("Test 3")
         try:
             Longitudes = [point['Longitude'] for point in Data]
             Latitudes = [point['Latitude'] for point in Data]
             Altitudes = [point['Altitude'] for point in Data]
-            Times = [point['Time'] for point in Data]
+            time_since_midnight = [point['Time'] for point in Data]
+            Times = np.array(time_since_midnight) - min(np.array(time_since_midnight))
+            Dates = np.array([point['Date'] for point in Data])
+            DateStr = Dates[0]
 
-            DateStr = Times[0].split()[0] if Times else ''
-
-            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
-
+            fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+            fig1.suptitle(f'Lat, Long, and Altitude Data {DateStr}')
             MinX, MaxX = min(Longitudes), max(Longitudes)
             MinY, MaxY = min(Latitudes), max(Latitudes)
 
             ax1.set_xlim(MinX - (MaxX - MinX) / 10, MaxX + (MaxX - MinX) / 10)
             ax1.set_ylim(MinY - (MaxY - MinY) / 10, MaxY + (MaxY - MinY) / 10)
 
-            InstanceMaps.PlotRivers(ax1, '2D', MinX, MaxX, MinY, MaxY)
-            InstanceMaps.PlotRoads(ax1, '2D', MinX, MaxX, MinY, MaxY)
-            InstanceMaps.PlotCounties(ax1, '2D', MinX, MaxX, MinY, MaxY)
-            InstanceMaps.PlotCities(ax1, '2D', MinX, MaxX, MinY, MaxY)
+            self.PlotRivers(ax1, '2D', MinX, MaxX, MinY, MaxY)
+            self.PlotRoads(ax1, '2D', MinX, MaxX, MinY, MaxY)
+            self.PlotCounties(ax1, '2D', MinX, MaxX, MinY, MaxY)
+            self.PlotCities(ax1, '2D', MinX, MaxX, MinY, MaxY)
 
         except Exception as e:
             InstanceErrors.Message = e
 
+        try: 
+            Pressure = [point['Pressure'] for point in Data]
+            Temperature = [point['Temperature'] for point in Data]
+            fig2, (ax3, ax4) = plt.subplots(1, 2, figsize=(14, 6))
+            fig2.suptitle(f'Pressure and Temperatue Data {DateStr}')
+
+        except Exception as e:
+            InstanceErrors.Message = e
+            print(InstanceErrors.Message)
+            print("Pressure or temperature not defined")
+        print("Test 4")
+
+
+
         ax1.plot(Longitudes, Latitudes, '.')
-        ax1.set_title('Latitude and Longitude | ' + DateStr, fontweight='bold')
+        ax1.set_title('Latitude and Longitude', fontweight='bold')
         ax1.set_xticks([])
         ax1.set_yticks([])
         ax1.axis('equal')
 
         ax2.plot(Times, Altitudes, '.')
-        ax2.set_title('Altitude | ' + DateStr, fontweight='bold')
-        ax2.set_xticks([])
-        ax2.set_yticks([])
+        ax2.set_title('Altitude vs. Time', fontweight='bold')
+        ax2.xaxis.set_major_locator(plticker.MaxNLocator(20))
+        ax2.yaxis.set_major_locator(plticker.MaxNLocator(15))
+        ax2.set_xlabel("Time (Mins)")
+        ax2.set_ylabel("Altitude (m)")
+        ax2.grid(True)
 
-        for altitude in [50000, 80000, 100000, 110000, 120000]:
-            ax2.axhline(y=altitude, color='k', linestyle='--', alpha=0.2)
-            ax2.text(x=min(Times), y=altitude, s=f'{altitude} ft', color='k', verticalalignment='bottom')
+        try:
+            ax3.plot(Times, Pressure, '.')
+            ax3.set_title('Pressure vs. Time', fontweight='bold')
+            ax3.xaxis.set_major_locator(plticker.MaxNLocator(20))
+            ax3.yaxis.set_major_locator(plticker.MaxNLocator(15))
+            ax3.set_xlabel("Time (Mins)")
+            ax3.set_ylabel("Pressure (Pa)")
+            ax3.grid(True)
 
+            ax4.plot(Times, Temperature, '.')
+            ax4.set_title('Temperature vs. Time', fontweight='bold')
+            ax4.xaxis.set_major_locator(plticker.MaxNLocator(20))
+            ax4.yaxis.set_major_locator(plticker.MaxNLocator(15))
+            ax4.set_xlabel("Time (Mins)")
+            ax4.set_ylabel("Temperature (C)")
+            ax4.grid(True)
+
+        except Exception:   
+            pass
+
+        plt.figure(fig1.number)
         plt.tight_layout()
+
+        plt.figure(fig2.number)
+        plt.tight_layout()
+
         plt.show()
 
         self.RFDData = self.IridiumData = self.APRSData = []
@@ -2956,7 +2996,7 @@ class ClassPredictions:
                     variable_name = re.findall("(.*?), ", Text[IndHead])[0]
                 except IndexError:
                     raise ValueError("Incorrect File Format")
-                dims = re.findall("\[(.*?)\]", Text[IndHead])
+                dims = re.findall(r"\[(.*?)\]", Text[IndHead]) # Syntax Change
                 dims.reverse()
                 LinesData = 0
                 for dim in dims[1:]: LinesData = int(dim) * (LinesData + 1)
@@ -2977,7 +3017,7 @@ class ClassPredictions:
                 data[:] = np.nan
                 for line in Text[IndHead + 1: IndHead + 1 + LinesData - 1]:
                     if len(line) > 0 and line[0] == "[":
-                        position = [int(v) for v in re.findall("\[(.*?)\]", line)]
+                        position = [int(v) for v in re.findall(r"\[(.*?)\]", line)] # Syntax Change
                         values = line.split()[1:]
                         if len(values) > 1:
                             for ind, value in enumerate(values):
@@ -3915,7 +3955,14 @@ class ClassSettings:
         except Exception as e:
             InstanceErrors.Message = e
 
+    # APRS Parser
+
     def Parser3Click(self):
+
+        def time_string_to_seconds(time_str):
+            h, m, s = map(int, time_str.split(':'))
+            return h * 3600 + m * 60 + s
+        
         try:
             Root = tk.Tk()
             Root.withdraw()
@@ -3923,17 +3970,23 @@ class ClassSettings:
             Root.destroy()
 
             InstanceMaps.APRSData = []
-
             if FilePath:
                 with open(FilePath, 'r') as file:
                     next(file)
                     for line in file:
-                        TimeMatch = re.search(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) CST', line)
+                        TimeMatch = re.search(r'\d{2}:\d{2}:\d{2}', line)
+                        DateMatch = re.search(r'\d{4}-\d{2}-\d{2}', line)
                         LatLonMatch = re.search(r'!(\d{4}\.\d{2})([NS])/(\d{5}\.\d{2})([EW])', line)
                         AltMatch = re.search(r'/A=(\d+)', line)
+                        PressureMatch = re.search(r'\d{4,}Pa', line)
+                        TemperatureMatch = re.search(r',\d{1,3}C|-\d{1,3}C', line)
 
                         if TimeMatch:
-                            Time = TimeMatch.group(1)
+                            Time = TimeMatch.group(0)
+                            Time = int((time_string_to_seconds(Time))/60)
+
+                        if DateMatch:
+                            Date = DateMatch.group(0)                            
 
                         if LatLonMatch:
                             Lat = float(LatLonMatch.group(1)) / 100 if LatLonMatch.group(2) == 'N' else -(float(LatLonMatch.group(1)) / 100)
@@ -3942,11 +3995,21 @@ class ClassSettings:
                         if AltMatch:
                             Alt = float(AltMatch.group(1))
 
+                        if PressureMatch:
+                            Pressure = float(PressureMatch.group(0).replace("Pa", ""))
+
+                        if TemperatureMatch:
+                            Temp = int(TemperatureMatch.group(0).replace(",", "").replace("C", ""))
+
+
                         Record = {
                             'Time': Time,
                             'Latitude': Lat,
                             'Longitude': Lon,
-                            'Altitude': Alt
+                            'Altitude': Alt,
+                            'Pressure': Pressure,
+                            'Temperature': Temp,
+                            'Date' : Date
                         }
                         InstanceMaps.APRSData.append(Record)
 
@@ -3956,7 +4019,7 @@ class ClassSettings:
                 if not os.path.exists(Directory): os.makedirs(Directory)
 
                 with open(FileName, 'w', newline='') as csvfile:
-                    Headers = ['Time', 'Latitude', 'Longitude', 'Altitude']
+                    Headers = ['Date','Time', 'Latitude', 'Longitude', 'Altitude', 'Pressure', 'Temperature']
                     Writer = csv.DictWriter(csvfile, fieldnames=Headers)
 
                     Writer.writeheader()
@@ -3965,19 +4028,21 @@ class ClassSettings:
                 InstanceMaps.ParserPlot(InstanceMaps.APRSData)
         except Exception as e:
             InstanceErrors.Message = e
+            print("There is an error!")
+            print(InstanceErrors.Message)
 
     def RunPredictionsClick(self):
         InstancePredictions.RunPrediction()
 
     def DemoModeClick(self):
         if InstanceDemo.Enabled:
-            InstanceSettings.Active = False
+            self.Active = False
             InstanceDemo.Enabled = False
             InstanceLaunch.Launched = False
             InstanceSystem.ScreenSetting = 'Thumb'
         else:
             InstanceDemo.Enabled = True
-            InstanceSettings.Active = False
+            self.Active = False
             InstanceLaunch.Launched = True
             InstanceSystem.ScreenSetting = 'Demo'
             InstanceScreen.StartStream()
@@ -4083,13 +4148,14 @@ class ClassInput:
 
     def Update(self):
         global InputRFD, InputIridium, InputAPRS, InputUbiquiti, InputArduino, InputCOMRFD, InputCOMArduino, InputText, InputTrackerLat, InputTrackerLon, InputTrackerAlt, InputPayloadLat, InputPayloadLon, InputPayloadAlt, InputTargetLat, InputTargetLon, InputAltOpen, InputAltClose, InputVelClose, InputIMEI, InputURL, InputWindowW, InputWindowH, InputPredictionLat, InputPredictionLon, InputPredictionAlt, InputPredictionAscent, InputPredictionDescent, InputPredictionFinalAlt, InputPredictionDate, InputPredictionTime, InputPredictionFloatAlt, InputPredictionFloatTime
-
+        
         for instance, hover, condition, prompt, rect, offset, limit, justify in self.TextFields:
             if globals()[condition]:
                 pygame.draw.rect(InstanceSystem.Window, InstanceSystem.ColorBlack, rect)
                 pygame.draw.rect(InstanceSystem.Window, (InstanceSystem.ColorGreen if condition else InstanceSystem.ColorLightRed), rect, 2)
 
-                if len(InputText) > int(limit) and (condition): DisplayText = InputText[:int(limit)] + "..."
+                if len(InputText) > int(limit) and (condition): 
+                    DisplayText = InputText[len(InputText) - int(limit) - 1:len(InputText) - 1]
                 else: DisplayText = InputText
 
                 if InputURL:
@@ -4116,8 +4182,9 @@ class ClassInput:
                 InstanceSystem.Window.blit(Text, TextRect)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: InstanceSystem.Shutdown()
-
+            if event.type == pygame.QUIT:
+                InstanceSystem.Shutdown()
+            
             MouseX, MouseY = pygame.mouse.get_pos()
             MousePos = pygame.mouse.get_pos()
 
@@ -4432,6 +4499,8 @@ while InstanceSystem.Running:
     ThreadDemo.join()
     ThreadInput.join()
 
+    # Displays Everything
+
     InstanceTitle.Display()
     InstanceScreen.Display()
 
@@ -4467,10 +4536,13 @@ while InstanceSystem.Running:
 # Close GUI
 InstanceSystem.Shutdown()
 
-#### CREDITS AND ACKNOWLEDGEMENTS ####
+#### CREDITS AND ACKNOWLEDGEMENTS #### (Jesse)
 
 # https://eric.clst.org/tech/usgeojson/
 # https://simplemaps.com/data/us-cities
 # https://hub.arcgis.com/datasets/esri::usa-rivers-and-streams
 # https://catalog.data.gov/dataset/gps-roads/resource/b6ec6509-f91f-4a67-b031-3719a8e95050
 # https://www.openstreetmap.org/#map=5/38.007/-95.844
+
+#### CREDITS AND ACKNOWLEDGEMENTS #### (Lani)
+# https://www.youtube.com/watch?v=ix9cRaBkVe0&t=6031s
